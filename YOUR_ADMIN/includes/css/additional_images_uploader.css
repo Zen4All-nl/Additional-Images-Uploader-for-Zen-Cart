@@ -4,8 +4,11 @@
 
 .productSearchResult {
     cursor: pointer;
-    padding: 15px 10px;
+    padding: 10px 10px;
+    margin-bottom: 2px;
     border: 1px solid grey;
+    border-radius: 5px;
+    list-style: none;
 }
 
 .productSearchResult:hover {
@@ -26,8 +29,4 @@
 
 #additionalImagesUploaderImagesBox h3 {
     text-align: center;
-    background: #337ab7;
-    color: #fff;
-    padding: 5px;
-    margin: 15px 5px;
 }

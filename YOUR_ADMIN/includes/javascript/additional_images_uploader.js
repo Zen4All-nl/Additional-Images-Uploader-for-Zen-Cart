@@ -12,7 +12,7 @@ function uploadAdditionalImage() {
     var form_data = new FormData($('#additional_image_upload')[0]);
     $.ajax({
         type: 'POST',
-        url: 'ajax.php?act=AdditionalImagesUploader&method=uploadAdditionalImage',
+        url: 'aiu_ajax.php?act=AdditionalImagesUploader&method=uploadAdditionalImage',
         processData: false,
         contentType: false,
         async: false,
@@ -20,7 +20,7 @@ function uploadAdditionalImage() {
         data: form_data,
         success: function (response) {
             var jsonResult = jQuery.parseJSON(response);
-            var newID = jsonResult.result.success.id;
+            // var newID = jsonResult.result.success.id;
             getAdditionalImages();
         }
     });
@@ -31,15 +31,17 @@ function getAdditionalImages() {
     $('#additionalImagesUploaderImages').html('');
     $.ajax({
         type: 'POST',
-        url: 'ajax.php?act=AdditionalImagesUploader&method=getAdditionalImages',
+        url: 'aiu_ajax.php?act=AdditionalImagesUploader&method=getAdditionalImages',
         data: 'product_id=' + product_id,
         dataType: "json",
         success: function (data) {
             var addtlImagesHTML = '';
             $(data.images).each(function (index, value) {
                 addtlImagesHTML = addtlImagesHTML + '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 additionalImagesUploaderImage">';
-                addtlImagesHTML = addtlImagesHTML + '<img src="' + value.filename + '" class="img-responsive"/>';
-                addtlImagesHTML = addtlImagesHTML + '<br/><a href="' + value.filename + '" target="_blank"><span>' + value.filename + '</span></a>';
+                addtlImagesHTML = addtlImagesHTML + '<a href="' + value.filename + '" target="_blank" class="thumbnail">';
+                addtlImagesHTML = addtlImagesHTML + '<img src="' + value.filename + '"/>';
+                addtlImagesHTML = addtlImagesHTML + '<div class="text-center">' + value.filename + '</div>';
+                addtlImagesHTML = addtlImagesHTML + '</a>';
                 addtlImagesHTML = addtlImagesHTML + '</div>';
                 $('#additionalImagesUploaderImages').html(addtlImagesHTML);
             });
@@ -58,7 +60,7 @@ function loadProductDetails() {
     var product_id = $('#product_id_input').val();
     $.ajax({
         type: 'POST',
-        url: 'ajax.php?act=AdditionalImagesUploader&method=checkProductID',
+        url: 'aiu_ajax.php?act=AdditionalImagesUploader&method=checkProductID',
         data: 'product_id=' + product_id,
         dataType: "json",
         success: function (data) {
@@ -83,15 +85,15 @@ function searchForProduct() {
         $("#additionalImagesSearchProductResult").html('');
         $.ajax({
             type: 'POST',
-            url: 'ajax.php?act=AdditionalImagesUploader&method=searchProducts',
+            url: 'aiu_ajax.php?act=AdditionalImagesUploader&method=searchProducts',
             data: $(this).serialize(),
             dataType: "json",
             success: function (data) {
                 var productSearchResult = '';
                 $(data.products).each(function (index, value) {
-                    productSearchResult = productSearchResult + '<div class="productSearchResult" id="pID-' + value.products_id + '">';
+                    productSearchResult = productSearchResult + '<li class="productSearchResult" id="pID-' + value.products_id + '">';
                     productSearchResult = productSearchResult + 'id# ' + value.products_id + ' - ' + value.products_name + '(' + value.products_model + ')';
-                    productSearchResult = productSearchResult + '</div>';
+                    productSearchResult = productSearchResult + '</li>';
                 });
                 $('#additionalImagesProductSearchResults').html(productSearchResult);
                 $('#additionalImagesProductSearchResults').show();
